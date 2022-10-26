@@ -8,8 +8,10 @@
     "export": "next export"
   },
   "dependencies": {
+    "@plaiceholder/next": "^2.5.0",
     "cypress": "^10.0.3",
     "next": "^12.1.5",
+    "plaiceholder": "^2.5.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }
