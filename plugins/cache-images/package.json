@@ -1,0 +1,15 @@
+{
+  "name": "cache-images",
+  "version": "1.0.0",
+  "description": "Cache optimised images which are produced at build time, so that next time you don't have to",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  }
+}
