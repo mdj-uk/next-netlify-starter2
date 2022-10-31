@@ -7,7 +7,7 @@
    images: {
     loader: "custom",
     imageSizes: [32],
-    deviceSizes: [640],
+    deviceSizes: [640, 1000],
   },
    env: {
       nextImageExportOptimizer_imageFolderPath: "public/images",

@@ -7,31 +7,40 @@ export const onPreBuild = async function ({ utils }) {
    // Returns false if the file/directory was not cached yet. Returns true otherwise.
    let imageManifestRestored = await utils.cache.restore(imageManifestFile)
    if (imageManifestRestored){
-      let sizes = [10, 32, 640];
-      // let path = './public/images/test-export/nextImageExportOptimizer/600x500-opt-*.WEBP'
-      // await utils.cache.restore(path)
+      let sizes = [10, 32, 1000];
       
       console.log('Found image manifest. Will attempt to parse ... ');
       
-      const fileContents = fs.readFileSync(imageManifestFile);
+      const fileContents = await fs.promises.readFile(imageManifestFile);
       const data = JSON.parse(fileContents);
-      console.log(data);
+      // console.log(data);
 
       let preOptimisedImageFiles = Object.keys(data);
       for (let srcFile of preOptimisedImageFiles){
+         let srcFileWithFullPath='./public/images/'+srcFile;
          // add here check to see if srcFile file still present (i.e is in lates commit)
+         let found = await exists(srcFileWithFullPath);
+         if (found){
+            console.log(`${srcFileWithFullPath} found in image manifest and local files`);
+         }
+         else {
+            console.log(`${srcFileWithFullPath} found in image manifest but not in local files`);
 
-         let files = sizes.map((s) => (
-            './public/images/' + 
-            path.dirname(srcFile) 
-            + '/nextImageExportOptimizer/' 
-            + Path.parse(srcFile).name + 
-            '-opt-' + s + '.WEBP'
-         ))
-         console.log(files);
-         
-         for (let f of files){
-            await utils.cache.restore(f)
+         }
+         if (found){
+            let files = sizes.map((s) => (
+               './public/images/' + 
+               path.dirname(srcFile) 
+               + '/nextImageExportOptimizer/' 
+               + Path.parse(srcFile).name + 
+               '-opt-' + s + '.WEBP'
+            ))
+            // console.log(files);
+            
+            for (let f of files){
+               console.log('restoring ' +f + ' from netlify cache');
+               await utils.cache.restore(f)
+            }
          }
 
       }
@@ -71,6 +80,16 @@ export const onPostBuild = async function ({ utils }) {
    console.log(res4);
 
 }
+
+
+async function exists (path) {  
+   try {
+     await fs.promises.access(path)
+     return true
+   } catch {
+     return false
+   }
+} 
 
 async function ls(dir){
    // directory path
