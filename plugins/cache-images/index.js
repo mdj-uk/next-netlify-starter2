@@ -6,6 +6,7 @@ export const onPreBuild = async function ({ utils }) {
    // console.log(res2);
    ls('.next');
    
+   
 
 }
 
