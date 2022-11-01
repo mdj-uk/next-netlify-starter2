@@ -9,16 +9,18 @@ export default function Test() {
    console.log(process.env.NODE_ENV);
    console.log(process.env.NETLIFY_LOCAL);
 
-   let dev = process.env.NETLIFY_LOCAL;
+   let dev = process.env.NODE_ENV === 'development';
+   console.log('dev');
+   console.log(dev);
    return <>
       hi
-      <ExportedImageFuture
+      {/* <ExportedImageFuture
          src="/images/test-export/600x500.jpeg"
          alt="puppy"
          width={600}
          height={500}
          useWebp={process.env.nextImageExportOptimizer_storePicturesInWEBP}
-      />
+      /> */}
       <img
          src={f_non}
          alt="puppy"
