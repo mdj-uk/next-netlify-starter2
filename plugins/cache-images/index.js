@@ -8,8 +8,6 @@ let parsedSizes = getSizes();
 let sizes = parsedSizes ? parsedSizes : defaultSizes;
 let imageFolder = nextConfig.env.nextImageExportOptimizer_imageFolderPath;
 
-// let imageFolder = 'public/images';
-
 export const onPreBuild = async function ({ utils }) {
 
    
@@ -53,9 +51,7 @@ export const onPreBuild = async function ({ utils }) {
                + path.parse(srcFile).name +
                '-opt-' + s + '.WEBP'
             ))
-
             for (let f of files) {
-               
                try {
                   let res = await utils.cache.restore(f)
                   if (res){
@@ -67,7 +63,6 @@ export const onPreBuild = async function ({ utils }) {
                }
             }
          }
-
       }
 
    }
@@ -86,7 +81,6 @@ export const onPostBuild = async function ({ utils }) {
       console.log('Error attempting to cache ' + imageFolder + ' for future builds.');
       console.error(error);
    }
-
 }
 
 
@@ -108,5 +102,4 @@ function getSizes(){
    } catch (error) {
       return false;
    }
-
 }
