@@ -1,10 +1,14 @@
 import fs from 'fs'
 import path from 'path'
+import nextConfig from '../../next.config.js';
 
-//  settings
+//  read settings from next config file - make sure this is imported correctly above
 const defaultSizes = [10, 16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840];
-let sizes = [10, 32, 1000];
-let imageFolder = './public/images';
+let parsedSizes = getSizes();
+let sizes = parsedSizes ? parsedSizes : defaultSizes;
+let imageFolder = nextConfig.env.nextImageExportOptimizer_imageFolderPath;
+
+// let imageFolder = 'public/images';
 
 export const onPreBuild = async function ({ utils }) {
 
@@ -53,8 +57,10 @@ export const onPreBuild = async function ({ utils }) {
             for (let f of files) {
                
                try {
-                  await utils.cache.restore(f)
-                  console.log('restored ' + f + ' from netlify cache');
+                  let res = await utils.cache.restore(f)
+                  if (res){
+                     console.log('restored ' + f + ' from netlify cache');
+                  }
                } catch (error) {
                   console.log('Error restoring ' + f + ' from netlify cache');
                   console.error(error);
@@ -92,3 +98,15 @@ async function exists(path) {
       return false
    }
 } 
+
+function getSizes(){
+   try {
+      let s= nextConfig.images.imageSizes;
+      let d= nextConfig.images.deviceSizes;
+      let sizes = [...s,...d];
+      return sizes;      
+   } catch (error) {
+      return false;
+   }
+
+}
